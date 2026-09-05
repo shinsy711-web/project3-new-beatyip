@@ -24,6 +24,7 @@ export default function Footer() {
             </p>
             <address style={{ fontStyle: 'normal', fontSize: 12, color: 'rgba(255,255,255,0.45)', lineHeight: 1.9 }}>
               운영: {OPERATOR.company}<br />
+              {OPERATOR.bizNumber && <>사업자등록번호: {OPERATOR.bizNumber}<br /></>}
               상담 파트너: {OPERATOR.partner} ({OPERATOR.partnerDesc})<br />
               문의: <a href={`mailto:${OPERATOR.email}`} style={{ textDecoration: 'underline' }}>{OPERATOR.email}</a><br />
               상담 시간: {OPERATOR.hours}

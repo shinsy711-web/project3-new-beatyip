@@ -22,7 +22,7 @@ node scripts/audit-seo.mjs   http://localhost:3129     # 제목·설명 길이, 
 ## 배포 전 반드시 채울 것 (TODO)
 | 항목 | 위치 | 상태 |
 |---|---|---|
-| 배포 도메인 | `.env.local` → `NEXT_PUBLIC_SITE_URL` | 임시값 `https://beautyipsi.kr` (설계서에 도메인 없음) |
+| 배포 도메인 | `.env.local` → `NEXT_PUBLIC_SITE_URL` | `https://beautyip.kr` 확정. 기존 project28이 쓰던 도메인이므로 교체 배포 시 이전 사이트는 내려야 함 |
 | DB API 키 | `.env.local` → `NEXT_PUBLIC_DB_API_KEY` | `REPLACE_WITH_PROJECT29_KEY` — 이 사이트 전용 키 발급 필요 |
 | GA4 측정 ID | `.env.local` → `NEXT_PUBLIC_GA_ID` | 비어 있으면 GA 스크립트 미삽입 |
 | 네이버 서치어드바이저 | `.env.local` → `NEXT_PUBLIC_NAVER_VERIFICATION` | 비어 있으면 메타 미삽입 |

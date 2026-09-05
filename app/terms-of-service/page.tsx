@@ -3,7 +3,7 @@ import TermsContent from '@/components/legal/TermsContent';
 
 export const metadata: Metadata = {
   title: '이용약관',
-  robots: { index: false, follow: false },
+  robots: { index: false, follow: true },
   alternates: { canonical: '/terms-of-service/' },
 };
 

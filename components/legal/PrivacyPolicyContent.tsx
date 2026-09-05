@@ -8,7 +8,7 @@ import { OPERATOR, SITE_NAME } from '@/lib/site';
  * 개인정보위 처리방침 작성지침의 권고에 따라 평어체·쉬운 용어로 쓴다.
  */
 
-const EFFECTIVE_DATE = '2026년 9월 5일';
+const EFFECTIVE_DATE = OPERATOR.policyDate;
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (

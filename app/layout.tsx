@@ -5,7 +5,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileCtaBar from '@/components/MobileCtaBar';
-import { SITE_NAME, SITE_SHORT, SITE_URL, OG, OG_IMAGE, ADSENSE_PUB, GA_ID, NAVER_VERIFICATION, OPERATOR, PROFILES, getPage, PAGES } from '@/lib/site';
+import { SITE_NAME, SITE_SHORT, SITE_URL, OG, OG_IMAGE, ADSENSE_PUB, GA_ID, NAVER_VERIFICATION, GOOGLE_VERIFICATION, OPERATOR, PROFILES, getPage, PAGES } from '@/lib/site';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist' });
 
@@ -47,7 +47,15 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico',
     apple: '/icon.png',
   },
-  ...(NAVER_VERIFICATION ? { verification: { other: { 'naver-site-verification': NAVER_VERIFICATION } } } : {}),
+  // 서치콘솔·서치어드바이저 인증 — 값이 있는 것만 넣는다
+  ...(NAVER_VERIFICATION || GOOGLE_VERIFICATION
+    ? {
+        verification: {
+          ...(GOOGLE_VERIFICATION ? { google: GOOGLE_VERIFICATION } : {}),
+          ...(NAVER_VERIFICATION ? { other: { 'naver-site-verification': NAVER_VERIFICATION } } : {}),
+        },
+      }
+    : {}),
   other: {
     ...(ADSENSE_PUB ? { 'google-adsense-account': ADSENSE_PUB } : {}),
     'NaverBot': 'all',
