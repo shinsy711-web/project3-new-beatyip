@@ -13,6 +13,17 @@ import { SITE_URL } from '@/lib/site';
  *  명시해두면 나중에 '*'에 Disallow가 추가돼도 AI 검색 노출이 끊기지 않는다.)
  */
 
+/**
+ * 국내 검색엔진 크롤러. '*' 규칙만으로도 허용되지만,
+ * 네이버 서치어드바이저가 robots.txt에 Yeti 명시를 권장하므로 별도 그룹으로 둔다.
+ */
+const KR_CRAWLERS = [
+  'Yeti',      // 네이버
+  'NaverBot',
+  'Daum',      // 다음(카카오)
+  'Daumoa',
+];
+
 const AI_CRAWLERS = [
   'GPTBot',              // OpenAI (ChatGPT 학습·검색)
   'OAI-SearchBot',       // OpenAI 검색 색인
@@ -32,6 +43,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       { userAgent: '*', allow: '/' },
+      { userAgent: KR_CRAWLERS, allow: '/' },
       { userAgent: AI_CRAWLERS, allow: '/' },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
