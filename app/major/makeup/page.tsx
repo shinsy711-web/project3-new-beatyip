@@ -63,7 +63,7 @@ export default function MajorMakeupPage() {
             rows={[
               [<Link key="ss" href="/univ/sungshin/">성신여자대학교</Link>, '뷰티산업학과', '서울', '4년제', '전형별 상이'],
               [<Link key="sw" href="/univ/seowon/">서원대학교</Link>, '뷰티학과', '충북 청주', '4년제', '있음'],
-              [<Link key="sk" href="/univ/etc/">서경대학교</Link>, '메이크업디자인학과', '서울', '4년제', '있음'],
+              [<Link key="sk" href="/univ/seokyeong/">서경대학교</Link>, '메이크업디자인학과', '서울', '4년제', '있음'],
               [<Link key="kw" href="/univ/etc/">광주여자대학교</Link>, '미용과학과', '광주', '4년제', '있음'],
               [<Link key="wk" href="/univ/etc/">원광대학교</Link>, '뷰티디자인학과', '전북 익산', '4년제', '있음'],
               [<Link key="bc" href="/univ/etc/">부천대학교</Link>, '뷰티케어과', '경기 부천', '전문대', '전형별 상이'],

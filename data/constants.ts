@@ -71,7 +71,7 @@ export const UNIVERSITIES: University[] = [
   { id: 'bucheon', name: '부천대학교', dept: '뷰티케어과', region: '경기 부천', track: ['hair', 'makeup', 'skin'], degree: '전문대(2~3년제)', practical: false, path: '/univ/etc/' },
   { id: 'hansung', name: '한성대학교', dept: '뷰티디자인학과', region: '서울', track: ['makeup', 'cosmetic'], degree: '4년제', practical: false, path: '/univ/etc/', note: '미래플러스대학(야간) · 재직자·성인학습자 대상 RPL 학위과정. 고3 대상 정시 실기 여부는 별도 확인' },
   { id: 'kwu', name: '광주여자대학교', dept: '미용과학과', region: '광주', track: ['hair', 'makeup', 'skin', 'nail'], degree: '4년제', practical: true, path: '/univ/etc/' },
-  { id: 'skuniv', name: '서경대학교', dept: '메이크업디자인학과', region: '서울', track: ['makeup'], degree: '4년제', practical: true, path: '/univ/etc/' },
+  { id: 'skuniv', name: '서경대학교', dept: '미용예술대학(헤어·메이크업·코스메틱)', region: '서울', track: ['hair', 'makeup', 'cosmetic'], degree: '4년제', practical: true, path: '/univ/seokyeong/', note: '헤어디자인·메이크업디자인·코스메틱뷰티매니지먼트 3개 학과. 수시 실기우수자 수능최저 없음' },
   { id: 'wonkwang', name: '원광대학교', dept: '뷰티디자인학과', region: '전북 익산', track: ['hair', 'makeup', 'skin'], degree: '4년제', practical: true, path: '/univ/etc/' },
   { id: 'swwu', name: '수원여자대학교', dept: '미용예술과', region: '경기 수원', track: ['hair', 'makeup', 'skin', 'nail'], degree: '전문대(2~3년제)', practical: true, path: '/univ/etc/' },
   { id: 'kku', name: '건국대학교 글로컬캠퍼스', dept: '뷰티화장품학과', region: '충북 충주', track: ['cosmetic'], degree: '4년제', practical: false, path: '/univ/etc/' },
