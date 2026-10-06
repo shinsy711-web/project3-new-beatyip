@@ -47,8 +47,13 @@ export const PROFILES: string[] = env('NEXT_PUBLIC_PROFILES')
  * 사이트를 넘겨받은 쪽이 개인정보처리자가 되므로 반드시 실제 정보로 채워야 한다.
  */
 export const OPERATOR = {
-  /** 사업자명(법인명 또는 상호) */
-  company: env('NEXT_PUBLIC_COMPANY', '(운영사명을 입력하세요)'),
+  /**
+   * 사업자명(법인명 또는 상호) = 개인정보 "수집·이용하는 자(수집 주체)".
+   * 동의 모달·처리방침·약관·필수안내·푸터가 전부 이 값 하나만 쓴다.
+   * 클라이언트 컴포넌트(동의 모달)에서는 process.env 동적 조회가 번들에 인라인되지 않아
+   * 환경변수가 아니라 이 기본값이 그대로 화면에 나온다 — 그래서 기본값도 실제 운영사로 둔다.
+   */
+  company: env('NEXT_PUBLIC_COMPANY', '주식회사 와야미디어'),
   /** 상담을 진행하는 브랜드명 — 본문 곳곳에 노출된다 */
   partner: env('NEXT_PUBLIC_PARTNER', '입시 상담팀'),
   /** 상담 브랜드 한 줄 소개 */

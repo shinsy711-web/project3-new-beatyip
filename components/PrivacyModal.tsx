@@ -4,9 +4,26 @@ import { useEffect, useState } from "react"
 import { OPERATOR } from "@/lib/site"
 
 export type Consents = {
-  /** 마케팅·이벤트 정보 수신 (선택). 거부해도 상담은 정상 진행 — 개인정보보호법 제22조 제5항 */
+  /**
+   * 마케팅·이벤트 정보 수신 (선택). 거부해도 상담은 정상 진행 — 개인정보보호법 제22조 제5항
+   * 현재 동의 UI를 화면에서 빼 둔 상태라 항상 false 로 전달된다(SHOW_MARKETING_CONSENT 참고).
+   * 전송 payload 의 consent_marketing 필드는 그대로 유지한다.
+   */
   marketing: boolean
 }
+
+/**
+ * 광고성 정보 수신 동의(선택) 블록을 화면에 보일지 여부. 2026-10-06 지시로 노출 중단.
+ *
+ * false 인 동안:
+ *   - 동의 모달에 "광고성 정보 수신 동의" 블록을 렌더하지 않는다.
+ *   - 선택 항목 관련 안내 문구("전체 동의 (선택 항목 포함)", 하단 안내 1줄)도 함께 숨긴다.
+ *   - onConfirm 으로 넘기는 marketing 은 항상 false → 폼의 consent_marketing: false 고정.
+ *
+ * 되돌릴 때는 이 값만 true 로 바꾸면 블록·안내 문구·체크값 전달이 모두 원래대로 돌아온다.
+ * (처리방침·약관의 광고성 정보 관련 설명은 그대로 두었으므로 함께 손댈 필요 없다.)
+ */
+const SHOW_MARKETING_CONSENT: boolean = false
 
 type Props = {
   onConfirm: (consents: Consents) => void
@@ -21,6 +38,7 @@ type Props = {
  * 폼 제출 시 뜨는 개인정보 동의 모달.
  * 필수(수집·이용 / 제3자 제공 / 14세 미만은 법정대리인)와 선택(마케팅 수신)을 분리한다.
  * 선택 동의를 거부해도 제출은 그대로 진행된다.
+ * 현재 선택 항목(광고성 수신)은 화면에서 빼 둔 상태다 — SHOW_MARKETING_CONSENT 주석 참고.
  * 흐름: 신청 버튼 → 이 모달 → "동의하고 신청" → onConfirm(동의값) → onClose
  */
 export default function PrivacyModal({ onConfirm, onClose, isMinor = false, isTeen = false }: Props) {
@@ -34,12 +52,13 @@ export default function PrivacyModal({ onConfirm, onClose, isMinor = false, isTe
   const primary = 'var(--primary)'
 
   // "전체 동의"는 선택 항목까지 포함한다(전체 체크 상태를 기준으로 토글).
-  const allChecked = allRequired && marketingAgree
+  // 선택 항목(광고성 수신)을 숨긴 동안에는 필수 항목만으로 "전체 동의" 상태가 된다.
+  const allChecked = allRequired && (!SHOW_MARKETING_CONSENT || marketingAgree)
   const handleAllAgree = () => {
     const next = !allChecked
     setPriAgree(next)
     setThirdAgree(next)
-    setMarketingAgree(next)
+    if (SHOW_MARKETING_CONSENT) setMarketingAgree(next)
     if (isMinor) setGuardianAgree(next)
   }
 
@@ -47,7 +66,8 @@ export default function PrivacyModal({ onConfirm, onClose, isMinor = false, isTe
     if (!priAgree) { alert('개인정보 수집 및 이용에 동의해 주세요.'); return }
     if (!thirdAgree) { alert('개인정보 제3자 제공에 동의해 주세요.'); return }
     if (isMinor && !guardianAgree) { alert('만 14세 미만은 보호자(법정대리인) 동의가 필요합니다.'); return }
-    onConfirm({ marketing: marketingAgree })
+    // 광고성 수신 동의를 화면에서 뺀 동안에는 동의받지 않은 것으로 전송한다(consent_marketing: false 고정).
+    onConfirm({ marketing: SHOW_MARKETING_CONSENT && marketingAgree })
     onClose()
   }
 
@@ -107,7 +127,7 @@ export default function PrivacyModal({ onConfirm, onClose, isMinor = false, isTe
                 <svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </div>
               <span style={{ fontSize: 15, fontWeight: 700, color: allChecked ? primary : '#3f3f46', textAlign: 'left' }}>
-                전체 동의 <span style={{ fontSize: 12, fontWeight: 500, color: '#a1a1aa' }}>(선택 항목 포함)</span>
+                전체 동의{SHOW_MARKETING_CONSENT && <> <span style={{ fontSize: 12, fontWeight: 500, color: '#a1a1aa' }}>(선택 항목 포함)</span></>}
               </span>
             </button>
 
@@ -139,19 +159,23 @@ export default function PrivacyModal({ onConfirm, onClose, isMinor = false, isTe
                 </ContentBox>
               )}
 
-              <ContentBox checked={marketingAgree} onChange={setMarketingAgree} label="광고성 정보 수신 동의" primary={primary} optional>
-                수신 내용 : 입시 설명회·모의실기 일정, 학원 할인·이벤트 등 광고성 정보<br />
-                수신 방법 : 문자메시지(SMS/LMS), 카카오 알림톡<br />
-                발송 시간 : 오전 8시부터 오후 9시까지만 발송합니다.<br />
-                보유 기간 : 수신 동의를 철회하실 때까지<br />
-                <b style={{ color: '#3f3f46' }}>이 항목은 선택입니다. 동의하지 않으셔도 학원비 견적과 입시 상담은 그대로 받으실 수 있습니다.</b><br />
-                수신 거부 : 문자 하단의 무료 수신거부 번호 또는 고객문의 이메일로 언제든 철회하실 수 있습니다.
-              </ContentBox>
+              {/* 광고성 정보 수신 동의(선택) — SHOW_MARKETING_CONSENT 가 false 인 동안 렌더하지 않는다. 되돌리려면 상단 상수만 true 로. */}
+              {SHOW_MARKETING_CONSENT && (
+                <ContentBox checked={marketingAgree} onChange={setMarketingAgree} label="광고성 정보 수신 동의" primary={primary} optional>
+                  수신 내용 : 입시 설명회·모의실기 일정, 학원 할인·이벤트 등 광고성 정보<br />
+                  수신 방법 : 문자메시지(SMS/LMS), 카카오 알림톡<br />
+                  발송 시간 : 오전 8시부터 오후 9시까지만 발송합니다.<br />
+                  보유 기간 : 수신 동의를 철회하실 때까지<br />
+                  <b style={{ color: '#3f3f46' }}>이 항목은 선택입니다. 동의하지 않으셔도 학원비 견적과 입시 상담은 그대로 받으실 수 있습니다.</b><br />
+                  수신 거부 : 문자 하단의 무료 수신거부 번호 또는 고객문의 이메일로 언제든 철회하실 수 있습니다.
+                </ContentBox>
+              )}
             </div>
 
             <div style={{ marginTop: 20, background: '#fafafa', borderRadius: 12, padding: '16px', fontSize: 12, color: '#a1a1aa', lineHeight: 1.8 }}>
               <p>• 필수 항목은 상담 응대에 꼭 필요한 정보이며, 거부하시면 상담 신청이 제한됩니다.</p>
-              <p>• 선택 항목(광고성 정보 수신)에 동의하지 않아도 상담 서비스는 동일하게 제공됩니다.</p>
+              {/* 선택 항목 안내 — 광고성 수신 동의 블록과 함께 숨긴다(화면에 없는 항목을 설명하지 않도록). */}
+              {SHOW_MARKETING_CONSENT && <p>• 선택 항목(광고성 정보 수신)에 동의하지 않아도 상담 서비스는 동일하게 제공됩니다.</p>}
               <p>• 수집한 정보는 위에 적은 목적 외의 용도로 사용하지 않습니다.</p>
               <p>• 언제든지 동의를 철회할 수 있고, 철회하시면 수집된 개인정보를 지체 없이 파기합니다.</p>
               {isMinor && <p>• 만 14세 미만은 보호자 연락처로 확인 문자를 보낸 뒤 동의가 확인되어야 상담이 진행됩니다.</p>}
