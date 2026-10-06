@@ -160,22 +160,96 @@ img { max-width: 100%; display: block; }
 }
 
 /* ── 하단 고정 바텀폼 (모바일·PC 공통) ───────────
+   본문 폼(FormSection)이 받는 항목을 똑같이 전부 받는다. 접었다 펴지 않고 처음부터 모두 노출한다.
    z-index 45: 모바일 CTA 바(40) 위, 헤더(50)·동의 모달(999/1000)·법률 모달(9999) 아래. */
 .bottom-form {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 45;
-  background: var(--glass);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
+  /* 입력칸을 전부 펼치면서 바가 높아져 반투명(--glass)으로는 뒤 본문이 비쳐 읽기 어렵다.
+     카드와 같은 불투명 배경 토큰을 쓴다. */
+  background: var(--bg-card);
   border-top: 1px solid var(--border-color);
   box-shadow: 0 -8px 24px rgba(28,27,46,0.08);
-  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
 }
+
+/* 좁은 화면 2열 → 중간 3열 → 넓은 화면 한 줄.
+   DOM 순서와 보이는 순서를 모든 구간에서 같게 맞춰 탭 이동이 뒤섞이지 않게 한다.
+   guardian·note 행은 해당 상황이 아니면 비어 0 높이로 접힌다. */
 .bottom-form__inner {
   max-width: 1100px; margin: 0 auto;
-  display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px;
+  display: grid; gap: 6px 8px; align-items: end;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "consent  consent"
+    "name     name"
+    "birth    region"
+    "phone    phone"
+    "major    submit"
+    "guardian guardian"
+    "note     note"
+    "status   status";
 }
+.bottom-form__title { grid-area: title; display: none; }
+.bottom-form__consent { grid-area: consent; }
+.bf-f--name { grid-area: name; }
+.bf-f--birth { grid-area: birth; }
+.bf-f--region { grid-area: region; }
+.bf-f--phone { grid-area: phone; }
+.bf-f--major { grid-area: major; }
+.bottom-form__submit { grid-area: submit; }
+.bf-guardian { grid-area: guardian; }
+.bottom-form__note { grid-area: note; }
+.bottom-form__status { grid-area: status; }
+
+/* 입력 한 칸 — 라벨 + 입력 상자 */
+.bf-f { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.bf-label {
+  font-size: 10px; font-weight: 800; color: var(--primary);
+  letter-spacing: 0.04em; line-height: 1.2; padding-left: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bf-box {
+  display: flex; align-items: center; min-width: 0; position: relative;
+  background: var(--bg-card); border: 1.5px solid var(--border-color);
+  border-radius: 12px; padding: 7px 10px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.bf-box:focus-within { border-color: var(--primary); box-shadow: 0 4px 16px rgba(217,72,110,0.12); }
+.bf-box--select { padding-right: 22px; }
+.bf-caret { position: absolute; right: 9px; pointer-events: none; color: var(--text-muted); font-size: 9px; }
+.bf-control {
+  flex: 1 1 auto; width: 100%; min-width: 0;
+  background: transparent; border: none; outline: none;
+  font-family: inherit; font-size: 16px; font-weight: 500; line-height: 1.2;
+  color: var(--text-primary); padding: 1px 0;
+}
+.bf-control::placeholder { color: var(--text-muted); font-size: 13px; }
+select.bf-control { appearance: none; -webkit-appearance: none; cursor: pointer; }
+select.bf-control.is-empty { color: var(--text-muted); }
+
+/* 연락처 — 앞자리 선택 + 번호 */
+.bf-phone { display: flex; gap: 6px; min-width: 0; }
+.bf-phone__prefix { width: 72px; flex: 0 0 72px; padding-left: 8px; }
+.bf-phone__num { flex: 1 1 auto; min-width: 0; }
+
+/* 성별 토글 — 본문 폼과 같은 모양 */
+.bf-sex {
+  display: flex; gap: 4px; flex-shrink: 0;
+  margin-left: 8px; padding-left: 8px; border-left: 1px solid var(--border-color);
+}
+.bf-sex button {
+  width: 28px; height: 28px; border-radius: 50%; border: none; cursor: pointer;
+  font-family: inherit; font-weight: 900; font-size: 11px; transition: all 0.2s;
+  background: var(--bg-main); color: var(--text-muted);
+}
+.bf-sex button[aria-pressed="true"] { background: var(--primary); color: #fff; }
+
+/* 만 14세 미만 보호자 정보 (정책이 guardian-verify 일 때만 나타난다) */
+.bf-guardian { display: flex; gap: 8px; min-width: 0; }
+.bf-guardian > .bf-f { flex: 1 1 0; }
+
 .bottom-form__title {
-  display: flex; align-items: center; gap: 8px; white-space: nowrap;
+  align-items: center; gap: 8px; white-space: nowrap;
   font-size: 14px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.02em;
 }
 .bottom-form__eyebrow {
@@ -184,42 +258,68 @@ img { max-width: 100%; display: block; }
   padding: 3px 8px; border-radius: 50px;
 }
 .bottom-form__consent {
-  display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px;
-  min-width: 0; font-size: 12px; color: var(--text-secondary);
+  display: flex; align-items: center; flex-wrap: wrap; gap: 2px 8px;
+  min-width: 0; font-size: 11.5px; color: var(--text-secondary);
 }
-.bottom-form__check { display: flex; align-items: center; gap: 6px; cursor: pointer; line-height: 1.45; }
+.bottom-form__check { display: flex; align-items: center; gap: 6px; cursor: pointer; line-height: 1.4; }
 .bottom-form__check input { width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; accent-color: var(--primary); }
 .bottom-form__check b { color: var(--primary); font-weight: 800; }
 .bottom-form__detail {
   background: none; border: none; padding: 0; cursor: pointer;
-  font-family: inherit; font-size: 12px; font-weight: 700; color: var(--text-muted);
+  font-family: inherit; font-size: 11.5px; font-weight: 700; color: var(--text-muted);
   text-decoration: underline; text-underline-offset: 2px;
 }
 .bottom-form__detail:hover { color: var(--primary); }
-.bottom-form__fields { display: flex; gap: 8px; flex: 1 1 260px; min-width: 0; }
-.bottom-form__phone {
-  flex: 1 1 auto; min-width: 0;
-  background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 14px;
-  padding: 11px 14px; font-family: inherit; font-size: 16px; font-weight: 500;
-  color: var(--text-primary); outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-.bottom-form__phone::placeholder { color: var(--text-muted); font-size: 14px; }
-.bottom-form__phone:focus { border-color: var(--primary); box-shadow: 0 4px 20px rgba(217,72,110,0.12); }
-.bottom-form__submit { flex-shrink: 0; padding: 11px 20px; font-size: 14px; white-space: nowrap; }
+.bottom-form__submit { width: 100%; padding: 10px 18px; font-size: 14px; white-space: nowrap; border-radius: 12px; }
 .bottom-form__submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-.bottom-form__status { flex-basis: 100%; margin: 0; font-size: 12px; font-weight: 600; line-height: 1.5; }
+.bottom-form__note { margin: 0; font-size: 11.5px; font-weight: 600; line-height: 1.5; color: var(--primary-dark); }
+.bottom-form__note:empty { display: none; }
+.bottom-form__status { margin: 0; font-size: 12px; font-weight: 600; line-height: 1.5; }
 .bottom-form__status:empty { display: none; }
 
-/* 바 높이만큼 본문 아래 여백 — BottomForm 이 실제 높이를 --bottom-form-h 로 넣어준다 */
-body { padding-bottom: var(--bottom-form-h, 84px); }
+/* 바 높이만큼 본문 아래 여백 — BottomForm 이 실제 높이를 --bottom-form-h 로 넣어준다.
+   아래 기본값은 JS 실행 전(또는 꺼졌을 때) 푸터가 가리지 않도록 둔 보수적인 값이다. */
+body { padding-bottom: var(--bottom-form-h, 136px); }
 
+/* 중간 폭 — 3열 */
+@media (min-width: 761px) and (max-width: 1079px) {
+  .bottom-form__inner {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+      "title    consent  consent"
+      "name     birth    region"
+      "phone    major    submit"
+      "guardian guardian guardian"
+      "note     note     note"
+      "status   status   status";
+  }
+  .bottom-form__title { display: flex; }
+  body { padding-bottom: var(--bottom-form-h, 196px); }
+}
+
+/* 넓은 폭 — 입력칸을 한 줄에 모두 놓아 높이를 줄인다 */
+@media (min-width: 1080px) {
+  .bottom-form { padding-left: 16px; padding-right: 16px; }
+  .bottom-form__inner {
+    grid-template-columns:
+      minmax(0, 1.3fr) minmax(0, 0.75fr) minmax(0, 0.9fr)
+      minmax(0, 1.4fr) minmax(0, 1.1fr) auto;
+    grid-template-areas:
+      "title    title    consent  consent  consent  consent"
+      "name     birth    region   phone    major    submit"
+      "guardian guardian guardian guardian guardian guardian"
+      "note     note     note     note     note     note"
+      "status   status   status   status   status   status";
+  }
+  .bottom-form__title { display: flex; }
+  body { padding-bottom: var(--bottom-form-h, 136px); }
+}
+
+/* 좁은 폭 — 2열 격자(기본값). 375px 에서도 가로 넘침이 없어야 한다 */
 @media (max-width: 760px) {
-  /* 좁은 화면에서는 동의 줄과 입력 줄을 각각 한 줄로 접는다(375px 기준 겹침·넘침 없음) */
-  .bottom-form { padding-left: 12px; padding-right: 12px; }
-  .bottom-form__title { display: none; }
-  .bottom-form__consent { flex-basis: 100%; font-size: 11.5px; }
-  .bottom-form__fields { flex-basis: 100%; }
-  body { padding-bottom: var(--bottom-form-h, 128px); }
+  .bottom-form__consent { font-size: 11px; }
+  .bottom-form__detail { font-size: 11px; }
+  body { padding-bottom: var(--bottom-form-h, 304px); }
 }
 
 /* 벤토 그리드 (project23 계승) */
