@@ -151,11 +151,11 @@ export default function BottomForm() {
       setShowModal(true)
       return
     }
-    // 체크박스를 켠 상태면 바로 전송한다(선택 항목인 광고성 정보 수신은 동의하지 않은 것으로 보낸다).
+    // 이미 동의한 상태면 바로 전송한다(선택 항목인 광고성 정보 수신은 동의하지 않은 것으로 보낸다).
     void send({ marketing: false })
   }
 
-  // 모달에서 동의하면 체크박스를 켜고 그대로 전송한다(본문 폼과 같은 흐름).
+  // 모달에서 동의하면 동의 상태로 바꾸고 그대로 전송한다(본문 폼과 같은 흐름).
   const handleModalConfirm = (consents: Consents) => {
     setAgreed(true)
     const error = firstError()
@@ -198,26 +198,6 @@ export default function BottomForm() {
             <span className="bottom-form__eyebrow">무료</span>
             학원비 견적 받기
           </p>
-
-          <div className="bottom-form__consent">
-            {/* 긴 동의 문구를 바에 그대로 풀어두면 두 줄로 줄바꿈되어 못생겨 보였다.
-                체크박스·라벨을 짧게 줄이고, 클릭하면(체크 자체를 가로채) 기존 PrivacyModal 을 그대로 띄운다.
-                동의를 "받는" 로직(agreed 상태, onChange, 모달의 onConfirm·검증·payload)은 그대로다 — 클릭 시 토글 대신 모달을 연다. */}
-            <label className="bottom-form__check">
-              <input
-                type="checkbox"
-                checked={agreed}
-                onChange={(e) => setAgreed(e.target.checked)}
-                onClick={(e) => { e.preventDefault(); setShowModal(true) }}
-              />
-              <span>
-                <b>[필수]</b> 개인정보 동의
-              </span>
-            </label>
-            <button type="button" className="bottom-form__detail" onClick={() => setShowModal(true)}>
-              상세보기
-            </button>
-          </div>
 
           {/* 성함 · 성별 */}
           <div className="bf-f bf-f--name">

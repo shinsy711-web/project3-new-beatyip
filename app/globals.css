@@ -180,7 +180,6 @@ img { max-width: 100%; display: block; }
   display: grid; gap: 6px 8px; align-items: end;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-template-areas:
-    "consent  consent"
     "name     name"
     "birth    region"
     "phone    phone"
@@ -190,7 +189,6 @@ img { max-width: 100%; display: block; }
     "status   status";
 }
 .bottom-form__title { grid-area: title; display: none; }
-.bottom-form__consent { grid-area: consent; }
 .bf-f--name { grid-area: name; }
 .bf-f--birth { grid-area: birth; }
 .bf-f--region { grid-area: region; }
@@ -257,20 +255,6 @@ select.bf-control.is-empty { color: var(--text-muted); }
   color: var(--primary); background: var(--primary-light);
   padding: 3px 8px; border-radius: 50px;
 }
-.bottom-form__consent {
-  display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px;
-  min-width: 0; font-size: 12px; color: var(--text-secondary);
-}
-.bottom-form__check { display: flex; align-items: center; gap: 6px; cursor: pointer; line-height: 1.3; }
-.bottom-form__check input { width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; accent-color: var(--primary); }
-.bottom-form__check span { white-space: nowrap; font-weight: 600; }
-.bottom-form__check b { color: var(--primary); font-weight: 800; }
-.bottom-form__detail {
-  background: none; border: none; padding: 0; cursor: pointer; white-space: nowrap;
-  font-family: inherit; font-size: 11.5px; font-weight: 700; color: var(--text-muted);
-  text-decoration: underline; text-underline-offset: 2px;
-}
-.bottom-form__detail:hover { color: var(--primary); }
 .bottom-form__submit { width: 100%; padding: 11px 20px; font-size: 14px; font-weight: 800; white-space: nowrap; border-radius: 999px; }
 .bottom-form__submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 .bottom-form__note { margin: 0; font-size: 11.5px; font-weight: 600; line-height: 1.5; color: var(--primary-dark); }
@@ -287,7 +271,7 @@ body { padding-bottom: var(--bottom-form-h, 136px); }
   .bottom-form__inner {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-areas:
-      "title    consent  consent"
+      "title    title    title"
       "name     birth    region"
       "phone    major    submit"
       "guardian guardian guardian"
@@ -306,7 +290,7 @@ body { padding-bottom: var(--bottom-form-h, 136px); }
       minmax(0, 1.3fr) minmax(0, 0.75fr) minmax(0, 0.9fr)
       minmax(0, 1.4fr) minmax(0, 1.1fr) auto;
     grid-template-areas:
-      "title    title    consent  consent  consent  consent"
+      "title    title    title    title    title    title"
       "name     birth    region   phone    major    submit"
       "guardian guardian guardian guardian guardian guardian"
       "note     note     note     note     note     note"
@@ -318,8 +302,6 @@ body { padding-bottom: var(--bottom-form-h, 136px); }
 
 /* 좁은 폭 — 2열 격자(기본값). 375px 에서도 가로 넘침이 없어야 한다 */
 @media (max-width: 760px) {
-  .bottom-form__consent { font-size: 11px; }
-  .bottom-form__detail { font-size: 11px; }
   body { padding-bottom: var(--bottom-form-h, 304px); }
 }
 
