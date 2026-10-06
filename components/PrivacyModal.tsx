@@ -123,16 +123,12 @@ export default function PrivacyModal({ onConfirm, onClose, isMinor = false, isTe
               </ContentBox>
 
               <ContentBox checked={thirdAgree} onChange={setThirdAgree} label="개인정보 제3자 제공 동의" primary={primary}>
-                제공받는 자 :<br />
-                ① {OPERATOR.partner} 입시 멘토(상담 담당자)<br />
-                ② 신청하신 지역·학과에 해당하는 <b>제휴 미용입시학원</b><br />
-                ③ 그 밖에 회사와 제휴한 <b>미용·뷰티 계열 교육기관 및 입시 상담 사업자</b><br />
-                <span style={{ color: '#52525b' }}>제휴처는 지역·학과·시기에 따라 달라지고 수시로 바뀝니다. 신청하신 정보가 어디에 제공되었는지는 문의하시면 개별로 확인해 알려드립니다.</span><br />
+                제공받는 자 : <b>{OPERATOR.thirdPartyRecipient}</b><br />
                 제공 목적 : 학원비 견적 산출, 지원 가능 대학 안내, 1:1 입시 상담 진행<br />
                 제공 항목 : 성명, 휴대폰 번호, 생년월일, 성별, 거주 지역, 희망 학과 (진단 폼 이용 시 전형 유형·내신 등급대 포함)<br />
                 보유·이용 기간 : 제공받은 날로부터 1년, 또는 상담 목적 달성 시 즉시 파기<br />
                 <span style={{ color: '#52525b' }}>회사는 이 제공에 대해 제휴처로부터 대가를 받습니다. 이용자에게는 비용을 청구하지 않습니다.</span><br />
-                동의 거부 권리 : 거부하실 수 있습니다. 다만 상담은 위 제휴처를 통해 이루어져, 거부하시면 상담 신청이 되지 않습니다.
+                동의 거부 권리 : 거부하실 수 있습니다. 다만 상담은 위 제공받는 자를 통해 이루어져, 거부하시면 상담 신청이 되지 않습니다.
               </ContentBox>
 
               {isMinor && (

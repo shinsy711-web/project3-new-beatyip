@@ -5,6 +5,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileCtaBar from '@/components/MobileCtaBar';
+import BottomForm from '@/components/BottomForm';
 import { SITE_NAME, SITE_SHORT, SITE_URL, OG, OG_IMAGE, ADSENSE_PUB, GA_ID, NAVER_VERIFICATION, GOOGLE_VERIFICATION, OPERATOR, PROFILES, getPage, PAGES } from '@/lib/site';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist' });
@@ -213,6 +214,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Footer />
         <MobileCtaBar />
+        {/* 전역 하단 고정 상담 바 — 모든 페이지, 모바일·PC 공통 */}
+        <BottomForm />
       </body>
     </html>
   );

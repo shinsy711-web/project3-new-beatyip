@@ -53,6 +53,11 @@ export const OPERATOR = {
   partner: env('NEXT_PUBLIC_PARTNER', '입시 상담팀'),
   /** 상담 브랜드 한 줄 소개 */
   partnerDesc: env('NEXT_PUBLIC_PARTNER_DESC', '미용입시 전문 상담'),
+  /**
+   * 개인정보 제3자 제공받는 자 — 동의 모달·처리방침·필수안내 전부 이 값 하나만 쓴다.
+   * 제공처 표기가 화면마다 달라지면 동의받은 범위와 처리방침이 어긋나므로 여기서만 고친다.
+   */
+  thirdPartyRecipient: env('NEXT_PUBLIC_THIRD_PARTY_RECIPIENT', '올댓뷰티 상담사'),
   /** 문의·개인정보 요청을 받는 이메일 */
   email: env('NEXT_PUBLIC_CONTACT_EMAIL', 'example@example.com'),
   /** 상담 가능 시간 */
