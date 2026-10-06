@@ -200,14 +200,18 @@ export default function BottomForm() {
           </p>
 
           <div className="bottom-form__consent">
+            {/* 긴 동의 문구를 바에 그대로 풀어두면 두 줄로 줄바꿈되어 못생겨 보였다.
+                체크박스·라벨을 짧게 줄이고, 클릭하면(체크 자체를 가로채) 기존 PrivacyModal 을 그대로 띄운다.
+                동의를 "받는" 로직(agreed 상태, onChange, 모달의 onConfirm·검증·payload)은 그대로다 — 클릭 시 토글 대신 모달을 연다. */}
             <label className="bottom-form__check">
               <input
                 type="checkbox"
                 checked={agreed}
                 onChange={(e) => setAgreed(e.target.checked)}
+                onClick={(e) => { e.preventDefault(); setShowModal(true) }}
               />
               <span>
-                <b>[필수]</b> 개인정보 수집 및 이용 동의 · 개인정보 제3자 제공 동의 · 만 14세 이상
+                <b>[필수]</b> 개인정보 동의
               </span>
             </label>
             <button type="button" className="bottom-form__detail" onClick={() => setShowModal(true)}>
