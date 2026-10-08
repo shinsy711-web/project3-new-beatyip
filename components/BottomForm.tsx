@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import PrivacyModal, { type Consents } from './PrivacyModal'
-import { validateForm, parsePhone, isUnder14, isTeen, UNDER14_POLICY, SPECIAL_CHAR_REG } from '@/lib/validate'
+import { validateForm, parsePhone, isUnder14, isTeen, UNDER14_POLICY, SPECIAL_CHAR_REG, cleanMobile2 } from '@/lib/validate'
 import { submitLead } from '@/lib/submit'
 import { REGIONS, MAJORS } from '@/data/constants'
 
@@ -328,8 +328,7 @@ export default function BottomForm() {
                   inputMode="numeric"
                   className="bf-control"
                   value={form.mobile2}
-                  onChange={(e) => set('mobile2', e.target.value.replace(/\D/g, ''))}
-                  maxLength={11}
+                  onChange={(e) => set('mobile2', cleanMobile2(e.target.value))}
                   placeholder="'-' 없이 입력"
                   autoComplete="tel-national"
                   disabled={sending}

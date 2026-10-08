@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import PrivacyModal, { type Consents } from "./PrivacyModal"
-import { validateForm, parsePhone, isUnder14, isTeen, UNDER14_POLICY, SPECIAL_CHAR_REG } from "@/lib/validate"
+import { validateForm, parsePhone, isUnder14, isTeen, UNDER14_POLICY, SPECIAL_CHAR_REG, cleanMobile2 } from "@/lib/validate"
 import { submitLead } from "@/lib/submit"
 import { REGIONS, MAJORS, ADMISSION_TYPES, GRADE_BANDS } from "@/data/constants"
 
@@ -234,8 +234,8 @@ export default function DiagnosisForm({ sourcePage = "diagnosis" }: Props) {
                   <select aria-label="전화번호 앞자리" value={form.mobile1} onChange={(e) => set("mobile1", e.target.value)} style={{ ...input, width: 96, flexShrink: 0, appearance: 'none' }}>
                     {["010", "011", "016", "017", "019"].map((v) => <option key={v} value={v}>{v}</option>)}
                   </select>
-                  <input id="dg-phone" type="tel" inputMode="numeric" value={form.mobile2} maxLength={11} placeholder="'-' 없이 입력"
-                    onChange={(e) => set("mobile2", e.target.value.replace(/\D/g, ""))} style={{ ...input, flex: 1 }} autoComplete="tel-national" />
+                  <input id="dg-phone" type="tel" inputMode="numeric" value={form.mobile2} placeholder="'-' 없이 입력"
+                    onChange={(e) => set("mobile2", cleanMobile2(e.target.value))} style={{ ...input, flex: 1 }} autoComplete="tel-national" />
                 </div>
               </div>
               {blocked && (

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import PrivacyModal, { type Consents } from "./PrivacyModal"
-import { validateForm, parsePhone, isUnder14, isTeen, UNDER14_POLICY, SPECIAL_CHAR_REG } from "@/lib/validate"
+import { validateForm, parsePhone, isUnder14, isTeen, UNDER14_POLICY, SPECIAL_CHAR_REG, cleanMobile2 } from "@/lib/validate"
 import { submitLead } from "@/lib/submit"
 import { REGIONS, MAJORS, type MajorId } from "@/data/constants"
 
@@ -233,10 +233,9 @@ export default function FormSection({
                       type="tel"
                       inputMode="numeric"
                       value={form.mobile2}
-                      onChange={(e) => set("mobile2", e.target.value.replace(/\D/g, ""))}
+                      onChange={(e) => set("mobile2", cleanMobile2(e.target.value))}
                       onFocus={() => setFocusedField('mobile2')}
                       onBlur={() => setFocusedField(null)}
-                      maxLength={11}
                       placeholder="'-' 없이 입력"
                       autoComplete="tel-national"
                       style={inputStyle}
