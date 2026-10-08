@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 import { OPERATOR } from "@/lib/site"
 
 export type Consents = {
@@ -91,7 +92,8 @@ export default function PrivacyModal({ onConfirm, onClose, isMinor = false, isTe
     return () => window.removeEventListener('keydown', onKey)
   }, [showAlert])
 
-  return (
+  // 바텀폼(backdrop-filter)·폼 섹션 안에서 열려도 갇히지 않도록 body 로 띄운다.
+  return createPortal(
     <>
       <div role="dialog" aria-modal="true" aria-label="개인정보 동의" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)', zIndex: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
         <div style={{ background: 'white', borderRadius: 24, width: '100%', maxWidth: 580, maxHeight: '85dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 25px 60px rgba(0,0,0,0.2)', position: 'relative' }}>
@@ -221,7 +223,8 @@ export default function PrivacyModal({ onConfirm, onClose, isMinor = false, isTe
           </div>
         </div>
       )}
-    </>
+    </>,
+    document.body
   )
 }
 
