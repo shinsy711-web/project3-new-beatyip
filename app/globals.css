@@ -302,7 +302,7 @@ body { padding-bottom: var(--bottom-form-h, 136px); }
 
 /* 좁은 폭 — 2열 격자(기본값). 375px 에서도 가로 넘침이 없어야 한다 */
 @media (max-width: 760px) {
-  body { padding-bottom: var(--bottom-form-h, 304px); }
+  body { padding-bottom: var(--bottom-form-h, 220px); }
 }
 
 /* 벤토 그리드 (project23 계승) */
@@ -311,3 +311,34 @@ body { padding-bottom: var(--bottom-form-h, 136px); }
 @media (max-width: 640px) { .bento-grid { grid-template-columns: 1fr; } .bento-grid > * { grid-column: span 1 !important; } }
 .bento-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 1.75rem; transition: transform 0.3s ease, box-shadow 0.3s ease; overflow: hidden; position: relative; }
 .bento-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--primary); }
+
+/* 바텀폼 등장 — 처음엔 화면 아래로 숨겨 두고(포커스도 안 가게 visibility),
+   BottomForm 이 스크롤 위치를 보고 .is-shown 을 붙이면 아래에서 올라온다. */
+.bottom-form {
+  transform: translateY(calc(100% + 48px)); visibility: hidden;
+  transition: transform 0.35s ease, visibility 0s linear 0.35s;
+}
+.bottom-form.is-shown {
+  transform: none; visibility: visible;
+  transition: transform 0.35s ease;
+}
+
+/* 모바일 — 입력칸은 그대로 다 보이되, 위 라벨을 빼고(placeholder 로 대신) 간격을 줄여
+   화면 가장자리에서 8px 띄운 둥근 카드로 납작하게 띄운다. 라벨은 스크린리더용으로 남긴다. */
+@media (max-width: 760px) {
+  .bottom-form {
+    left: 8px; right: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    border: 1px solid var(--border-color); border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(28,27,46,0.18);
+    padding: 8px;
+  }
+  .bottom-form__inner { gap: 6px; }
+  .bf-label {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .bf-box { padding: 5px 12px; }
+  .bf-box--select { padding-right: 26px; }
+  .bf-phone__prefix { padding-left: 8px; }
+  .bottom-form__submit { padding: 9px 16px; }
+}
