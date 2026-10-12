@@ -30,7 +30,7 @@ export const OG_IMAGE = `${SITE_URL}${OG.path}`;
 export const ADSENSE_PUB = env('NEXT_PUBLIC_ADSENSE_PUB');           // 예: ca-pub-0000000000000000
 export const GA_ID = env('NEXT_PUBLIC_GA_ID');                        // 예: G-XXXXXXXXXX
 export const NAVER_VERIFICATION = env('NEXT_PUBLIC_NAVER_VERIFICATION');
-export const GOOGLE_VERIFICATION = env('NEXT_PUBLIC_GOOGLE_VERIFICATION');
+export const GOOGLE_VERIFICATION = env('NEXT_PUBLIC_GOOGLE_VERIFICATION', 'cFpexihL7yfXA-y8ugZavwJWmAJ_MC7DrHitkE6SUyA');
 
 /**
  * Organization 스키마의 sameAs — 이 사이트 운영 주체와 동일 주체임이 확인되는 외부 프로필만.
