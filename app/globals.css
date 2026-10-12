@@ -183,7 +183,8 @@ img { max-width: 100%; display: block; }
     "name     name"
     "birth    region"
     "phone    phone"
-    "major    submit"
+    "major    purpose"
+    "submit   submit"
     "guardian guardian"
     "note     note"
     "status   status";
@@ -194,6 +195,7 @@ img { max-width: 100%; display: block; }
 .bf-f--region { grid-area: region; }
 .bf-f--phone { grid-area: phone; }
 .bf-f--major { grid-area: major; }
+.bf-f--purpose { grid-area: purpose; }
 .bottom-form__submit { grid-area: submit; }
 .bf-guardian { grid-area: guardian; }
 .bottom-form__note { grid-area: note; }
@@ -273,13 +275,14 @@ body { padding-bottom: var(--bottom-form-h, 136px); }
     grid-template-areas:
       "title    title    title"
       "name     birth    region"
-      "phone    major    submit"
+      "phone    major    purpose"
+      "submit   submit   submit"
       "guardian guardian guardian"
       "note     note     note"
       "status   status   status";
   }
   .bottom-form__title { display: flex; }
-  body { padding-bottom: var(--bottom-form-h, 196px); }
+  body { padding-bottom: var(--bottom-form-h, 246px); }
 }
 
 /* 넓은 폭 — 입력칸을 한 줄에 모두 놓아 높이를 줄인다 */
@@ -287,14 +290,14 @@ body { padding-bottom: var(--bottom-form-h, 136px); }
   .bottom-form { padding-left: 16px; padding-right: 16px; }
   .bottom-form__inner {
     grid-template-columns:
-      minmax(0, 1.3fr) minmax(0, 0.75fr) minmax(0, 0.9fr)
-      minmax(0, 1.4fr) minmax(0, 1.1fr) auto;
+      minmax(0, 1.2fr) minmax(0, 0.75fr) minmax(0, 0.85fr)
+      minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 0.95fr) auto;
     grid-template-areas:
-      "title    title    title    title    title    title"
-      "name     birth    region   phone    major    submit"
-      "guardian guardian guardian guardian guardian guardian"
-      "note     note     note     note     note     note"
-      "status   status   status   status   status   status";
+      "title    title    title    title    title    title    title"
+      "name     birth    region   phone    major    purpose  submit"
+      "guardian guardian guardian guardian guardian guardian guardian"
+      "note     note     note     note     note     note     note"
+      "status   status   status   status   status   status   status";
   }
   .bottom-form__title { display: flex; }
   body { padding-bottom: var(--bottom-form-h, 136px); }
@@ -302,7 +305,7 @@ body { padding-bottom: var(--bottom-form-h, 136px); }
 
 /* 좁은 폭 — 2열 격자(기본값). 375px 에서도 가로 넘침이 없어야 한다 */
 @media (max-width: 760px) {
-  body { padding-bottom: var(--bottom-form-h, 220px); }
+  body { padding-bottom: var(--bottom-form-h, 260px); }
 }
 
 /* 벤토 그리드 (project23 계승) */

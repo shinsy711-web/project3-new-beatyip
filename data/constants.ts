@@ -14,6 +14,14 @@ export const MAJORS = [
 ] as const;
 export type MajorId = (typeof MAJORS)[number]['id'];
 
+/**
+ * 상담 목적 — 접수 서버의 purpose 칼럼과 디스코드 알림 '목적' 칸에 그대로 들어간다.
+ * 입시가 아닌 문의(자격증·취미·원데이)를 막지는 않고, 받는 쪽이 구분해 응대할 수 있게 값만 남긴다.
+ */
+export const PURPOSES = ['대학 입시', '자격증 취득', '취미·원데이클래스', '취업·기타'] as const;
+/** 진단 폼은 전형 유형부터 묻는 입시 전용 흐름이라 목적을 묻지 않고 이 값으로 보낸다 */
+export const PURPOSE_ADMISSION = PURPOSES[0];
+
 /** 전형 유형 */
 export const ADMISSION_TYPES = [
   { id: 'susi_practical', label: '수시 실기전형', desc: '내신 + 실기(와인딩·아트마스크 등)' },

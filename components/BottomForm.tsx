@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import PrivacyModal, { type Consents } from './PrivacyModal'
 import { validateForm, parsePhone, isUnder14, isTeen, UNDER14_POLICY, SPECIAL_CHAR_REG, cleanMobile2 } from '@/lib/validate'
 import { submitLead } from '@/lib/submit'
-import { REGIONS, MAJORS } from '@/data/constants'
+import { REGIONS, MAJORS, PURPOSES } from '@/data/constants'
 
 type Status = { kind: 'idle' | 'sending' | 'done' | 'error'; message: string }
 
@@ -13,7 +13,7 @@ const IDLE: Status = { kind: 'idle', message: '' }
 
 /**
  * 입력 항목은 본문 폼(FormSection)과 1:1 로 같다. 여기서 항목을 늘리거나 줄이지 말 것.
- * (성함 · 성별 · 생년월일 · 연락처 앞자리/번호 · 거주 지역 · 희망 학과, 만 14세 미만만 보호자 성함/연락처)
+ * (성함 · 성별 · 생년월일 · 연락처 앞자리/번호 · 거주 지역 · 희망 학과 · 상담 목적, 만 14세 미만만 보호자 성함/연락처)
  */
 const INITIAL = {
   customer_name: '',
@@ -23,6 +23,7 @@ const INITIAL = {
   customer_sex: '2',
   region: '',
   major: '',
+  purpose: '',
   guardian_name: '',
   guardian_phone: '',
 }
@@ -118,6 +119,7 @@ export default function BottomForm() {
     if (error) return error
     if (!form.region) return '거주 지역을 선택해 주세요.'
     if (!form.major) return '희망 학과를 선택해 주세요.'
+    if (!form.purpose) return '상담 목적을 선택해 주세요.'
     if (minor && !form.guardian_name) return '만 14세 미만은 보호자 성함을 입력해 주세요.'
     if (minor && !/^\d{10,11}$/.test(form.guardian_phone)) return '만 14세 미만은 보호자 연락처(숫자만)를 입력해 주세요.'
     const phoneResult = parsePhone(form.mobile1, form.mobile2)
@@ -143,6 +145,7 @@ export default function BottomForm() {
       has_license: 'N',
       major: majorLabel,
       interest_field: majorLabel,
+      purpose: form.purpose,
       source_page: `bottom-form${pathname ?? ''}`,
       category: '미용입시',
       consent_privacy: true,
@@ -342,6 +345,24 @@ export default function BottomForm() {
               >
                 <option value="" disabled hidden>학과 선택</option>
                 {MAJORS.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
+              </select>
+              <span className="bf-caret" aria-hidden="true">▼</span>
+            </div>
+          </div>
+
+          {/* 상담 목적 */}
+          <div className="bf-f bf-f--purpose">
+            <label className="bf-label" htmlFor="bf-purpose">상담 목적</label>
+            <div className="bf-box bf-box--select">
+              <select
+                id="bf-purpose"
+                className={`bf-control${form.purpose ? '' : ' is-empty'}`}
+                value={form.purpose}
+                onChange={(e) => set('purpose', e.target.value)}
+                disabled={sending}
+              >
+                <option value="" disabled hidden>목적 선택</option>
+                {PURPOSES.map((p) => <option key={p} value={p}>{p}</option>)}
               </select>
               <span className="bf-caret" aria-hidden="true">▼</span>
             </div>

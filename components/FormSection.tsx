@@ -4,7 +4,7 @@ import { useState } from "react"
 import PrivacyModal, { type Consents } from "./PrivacyModal"
 import { validateForm, parsePhone, isUnder14, isTeen, UNDER14_POLICY, SPECIAL_CHAR_REG, cleanMobile2 } from "@/lib/validate"
 import { submitLead } from "@/lib/submit"
-import { REGIONS, MAJORS, type MajorId } from "@/data/constants"
+import { REGIONS, MAJORS, PURPOSES, type MajorId } from "@/data/constants"
 
 type Props = {
   cta?: string             // 버튼 문구 (설계서 페이지별 CTA)
@@ -35,6 +35,7 @@ export default function FormSection({
     customer_sex: "2",
     region: "",
     major: (defaultMajor ?? "") as string,
+    purpose: "",
     guardian_name: "",
     guardian_phone: "",
   }
@@ -67,6 +68,7 @@ export default function FormSection({
     if (error) { alert(error); return }
     if (!form.region) { alert("거주 지역을 선택해 주세요."); return }
     if (!form.major) { alert("희망 학과를 선택해 주세요."); return }
+    if (!form.purpose) { alert("상담 목적을 선택해 주세요."); return }
     if (minor && !form.guardian_name) { alert("만 14세 미만은 보호자 성함을 입력해 주세요."); return }
     if (minor && !/^\d{10,11}$/.test(form.guardian_phone)) { alert("만 14세 미만은 보호자 연락처(숫자만)를 입력해 주세요."); return }
     setShowModal(true)
@@ -89,6 +91,7 @@ export default function FormSection({
       has_license: "N",
       major: majorLabel,
       interest_field: majorLabel,
+      purpose: form.purpose,
       source_page: sourcePage,
       category: "미용입시",
       consent_privacy: true,
@@ -263,22 +266,42 @@ export default function FormSection({
               </div>
             </div>
 
-            {/* 희망학과 (전형 유형은 입력 부담을 줄이려 제거 — 상담 단계에서 확인한다) */}
-            <div style={inputGroupStyle}>
-              <label htmlFor={`${id}-major`} style={labelStyle}>희망 학과</label>
-              <div style={{ ...getInputWrapperStyle('major'), position: 'relative' }}>
-                <select
-                  id={`${id}-major`}
-                  value={form.major}
-                  onChange={(e) => set("major", e.target.value)}
-                  onFocus={() => setFocusedField('major')}
-                  onBlur={() => setFocusedField(null)}
-                  style={{ ...inputStyle, appearance: 'none', cursor: 'pointer', color: form.major ? 'var(--text-primary)' : 'var(--text-muted)' }}
-                >
-                  <option value="" disabled hidden>학과 선택</option>
-                  {MAJORS.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
-                </select>
-                {caret(20)}
+            {/* 희망학과 & 상담 목적 (전형 유형은 입력 부담을 줄이려 제거 — 상담 단계에서 확인한다) */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+              <div style={inputGroupStyle}>
+                <label htmlFor={`${id}-major`} style={labelStyle}>희망 학과</label>
+                <div style={{ ...getInputWrapperStyle('major'), position: 'relative' }}>
+                  <select
+                    id={`${id}-major`}
+                    value={form.major}
+                    onChange={(e) => set("major", e.target.value)}
+                    onFocus={() => setFocusedField('major')}
+                    onBlur={() => setFocusedField(null)}
+                    style={{ ...inputStyle, appearance: 'none', cursor: 'pointer', color: form.major ? 'var(--text-primary)' : 'var(--text-muted)' }}
+                  >
+                    <option value="" disabled hidden>학과 선택</option>
+                    {MAJORS.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
+                  </select>
+                  {caret(20)}
+                </div>
+              </div>
+
+              <div style={inputGroupStyle}>
+                <label htmlFor={`${id}-purpose`} style={labelStyle}>상담 목적</label>
+                <div style={{ ...getInputWrapperStyle('purpose'), position: 'relative' }}>
+                  <select
+                    id={`${id}-purpose`}
+                    value={form.purpose}
+                    onChange={(e) => set("purpose", e.target.value)}
+                    onFocus={() => setFocusedField('purpose')}
+                    onBlur={() => setFocusedField(null)}
+                    style={{ ...inputStyle, appearance: 'none', cursor: 'pointer', color: form.purpose ? 'var(--text-primary)' : 'var(--text-muted)' }}
+                  >
+                    <option value="" disabled hidden>목적 선택</option>
+                    {PURPOSES.map((p) => <option key={p} value={p}>{p}</option>)}
+                  </select>
+                  {caret(20)}
+                </div>
               </div>
             </div>
 

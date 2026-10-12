@@ -5,7 +5,7 @@ import Link from "next/link"
 import PrivacyModal, { type Consents } from "./PrivacyModal"
 import { validateForm, parsePhone, isUnder14, isTeen, UNDER14_POLICY, SPECIAL_CHAR_REG, cleanMobile2 } from "@/lib/validate"
 import { submitLead } from "@/lib/submit"
-import { REGIONS, MAJORS, ADMISSION_TYPES, GRADE_BANDS } from "@/data/constants"
+import { REGIONS, MAJORS, ADMISSION_TYPES, GRADE_BANDS, PURPOSE_ADMISSION } from "@/data/constants"
 
 type Props = { sourcePage?: string }
 
@@ -77,6 +77,7 @@ export default function DiagnosisForm({ sourcePage = "diagnosis" }: Props) {
       admission_type: admissionLabel,
       grade_band: form.grade_band,
       interest_field: majorLabel,
+      purpose: PURPOSE_ADMISSION,
       source_page: sourcePage,
       category: "미용입시",
       consent_privacy: true,
