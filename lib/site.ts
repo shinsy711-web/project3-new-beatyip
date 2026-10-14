@@ -64,11 +64,11 @@ export const OPERATOR = {
    */
   thirdPartyRecipient: env('NEXT_PUBLIC_THIRD_PARTY_RECIPIENT', '올댓뷰티 상담사'),
   /** 문의·개인정보 요청을 받는 이메일 */
-  email: env('NEXT_PUBLIC_CONTACT_EMAIL', 'example@example.com'),
+  email: env('NEXT_PUBLIC_CONTACT_EMAIL', 'shinsy711@gmail.com'),
   /** 상담 가능 시간 */
   hours: env('NEXT_PUBLIC_HOURS', '월~토 10:00 ~ 19:00 (일요일·공휴일 휴무)'),
   /** 개인정보 보호책임자 성명 */
-  privacyOfficer: env('NEXT_PUBLIC_PRIVACY_OFFICER', '(보호책임자 성명)'),
+  privacyOfficer: env('NEXT_PUBLIC_PRIVACY_OFFICER', '신승윤'),
   /** 사업자등록번호(선택) — 입력하면 푸터·소개 페이지에 표시 */
   bizNumber: env('NEXT_PUBLIC_BIZ_NUMBER'),
   /** 개인정보처리방침 시행일 */
